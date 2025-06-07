@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Shop Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        accent: '#f59e0b',
+                        neutral: '#1f2937',
+                        'neutral-light': '#f3f4f6',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-shadow {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+            .transition-custom {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+    <div id="app" class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <header class="mb-8">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fa fa-paw text-primary text-3xl"></i>
+                    <h1 class="text-2xl font-bold text-neutral">
+                        <span id="header-title">Pet Shop Management</span>
+                    </h1>
+                </div>
+                <div class="flex space-x-2">
+                    <button id="btn-lang-en" class="px-3 py-1 rounded-md bg-primary text-white transition-custom">English</button>
+                    <button id="btn-lang-zh" class="px-3 py-1 rounded-md bg-gray-200 text-neutral transition-custom">中文</button>
+                </div>
+            </div>
+            <div class="border-b border-gray-200 my-4"></div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Step 1: Select Member -->
+            <section id="step-1" class="block">
+                <div class="bg-white rounded-xl p-6 card-shadow mb-6">
+                    <h2 class="text-xl font-semibold mb-4 text-neutral">
+                        <span id="step-1-title">Select Today's Reserved Members</span>
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Sample Member Cards -->
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-custom cursor-pointer member-card" data-id="1">
+                            <div class="flex items-center">
+                                <img src="https://picsum.photos/seed/person1/60/60" alt="Member Avatar" class="w-12 h-12 rounded-full object-cover mr-4">
+                                <div>
+                                    <h3 class="font-medium text-neutral">
+                                        <span id="member-1-name">Jennifer Lee</span>
+                                    </h3>
+                                    <p class="text-sm text-gray-500">
+                                        <span id="member-1-phone">Phone: +1 (555) 123-4567</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-custom cursor-pointer member-card" data-id="2">
+                            <div class="flex items-center">
+                                <img src="https://picsum.photos/seed/person2/60/60" alt="Member Avatar" class="w-12 h-12 rounded-full object-cover mr-4">
+                                <div>
+                                    <h3 class="font-medium text-neutral">
+                                        <span id="member-2-name">Michael Chen</span>
+                                    </h3>
+                                    <p class="text-sm text-gray-500">
+                                        <span id="member-2-phone">Phone: +1 (555) 987-6543</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-custom cursor-pointer member-card" data-id="3">
+                            <div class="flex items-center">
+                                <img src="https://picsum.photos/seed/person3/60/60" alt="Member Avatar" class="w-12 h-12 rounded-full object-cover mr-4">
+                                <div>
+                                    <h3 class="font-medium text-neutral">
+                                        <span id="member-3-name">Sarah Johnson</span>
+                                    </h3>
+                                    <p class="text-sm text-gray-500">
+                                        <span id="member-3-phone">Phone: +1 (555) 456-7890</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-primary transition-custom cursor-pointer member-card" data-id="4">
+                            <div class="flex items-center">
+                                <img src="https://picsum.photos/seed/person4/60/60" alt="Member Avatar" class="w-12 h-12 rounded-full object-cover mr-4">
+                                <div>
+                                    <h3 class="font-medium text-neutral">
+                                        <span id="member-4-name">David Wilson</span>
+                                    </h3>
+                                    <p class="text-sm text-gray-500">
+                                        <span id="member-4-phone">Phone: +1 (555) 234-5678</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Pet Information -->
+            <section id="step-2" class="hidden">
+                <div class="bg-white rounded-xl p-6 card-shadow mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-neutral">
+                            <span id="step-2-title">Pet Information</span>
+                        </h2>
+                        <button id="back-to-step-1" class="text-primary hover:text-primary/80 transition-custom">
+                            <i class="fa fa-arrow-left mr-1"></i>
+                            <span id="back-button">Back</span>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <div class="relative">
+                                <img id="pet-image" src="https://picsum.photos/seed/dog1/400/300" alt="Pet Photo" class="w-full h-64 object-cover rounded-lg">
+                                <div class="absolute bottom-3 left-3 bg-white/90 px-3 py-1 rounded-full text-sm font-medium">
+                                    <span id="pet-breed">Golden Retriever</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h3 class="font-medium text-lg mb-2">
+                                    <span id="pet-name">Buddy</span>
+                                    <span class="text-sm text-gray-500 font-normal ml-2">
+                                        <span id="pet-age">3 years old</span>
+                                    </span>
+                                </h3>
+                                
+                                <div class="mt-3">
+                                    <h4 class="font-medium text-neutral mb-1">
+                                        <span id="allergy-title">Allergies:</span>
+                                    </h4>
+                                    <p class="text-gray-600">
+                                        <span id="pet-allergy">Oatmeal Bath, Beef</span>
+                                    </p>
+                                </div>
+                                
+                                <div class="mt-3">
+                                    <h4 class="font-medium text-neutral mb-1">
+                                        <span id="special-instructions-title">Special Instructions:</span>
+                                    </h4>
+                                    <p class="text-gray-600">
+                                        <span id="pet-instructions">Gentle handling, scared of clippers</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-medium text-lg mb-3">
+                                <span id="grooming-services-title">Select Grooming Services</span>
+                            </h3>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="service-1" class="w-5 h-5 text-primary rounded focus:ring-primary">
+                                    <label for="service-1" class="ml-2 text-gray-700">
+                                        <span id="service-1-name">Bath & Brush</span>
+                                    </label>
+                                    <span class="ml-auto text-gray-500">$35</span>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="service-2" class="w-5 h-5 text-primary rounded focus:ring-primary">
+                                    <label for="service-2" class="ml-2 text-gray-700">
+                                        <span id="service-2-name">Haircut - Round Head</span>
+                                    </label>
+                                    <span class="ml-auto text-gray-500">$45</span>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="service-3" class="w-5 h-5 text-primary rounded focus:ring-primary">
+                                    <label for="service-3" class="ml-2 text-gray-700">
+                                        <span id="service-3-name">Nail Trim</span>
+                                    </label>
+                                    <span class="ml-auto text-gray-500">$15</span>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="service-4" class="w-5 h-5 text-primary rounded focus:ring-primary">
+                                    <label for="service-4" class="ml-2 text-gray-700">
+                                        <span id="service-4-name">Teeth Brushing</span>
+                                    </label>
+                                    <span class="ml-auto text-gray-500">$10</span>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="service-5" class="w-5 h-5 text-primary rounded focus:ring-primary">
+                                    <label for="service-5" class="ml-2 text-gray-700">
+                                        <span id="service-5-name">Ear Cleaning</span>
+                                    </label>
+                                    <span class="ml-auto text-gray-500">$12</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 p-4 bg-gray-50 rounded-lg">
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-600">
+                                        <span id="subtotal-text">Subtotal:</span>
+                                    </span>
+                                    <span id="subtotal-amount">$0.00</span>
+                                </div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-gray-600">
+                                        <span id="tax-text">Tax (8%):</span>
+                                    </span>
+                                    <span id="tax-amount">$0.00</span>
+                                </div>
+                                <div class="flex justify-between font-medium">
+                                    <span>
+                                        <span id="total-text">Total:</span>
+                                    </span>
+                                    <span id="total-amount">$0.00</span>
+                                </div>
+                            </div>
+                            
+                            <button id="generate-label" class="mt-6 w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg transition-custom">
+                                <i class="fa fa-print mr-2"></i>
+                                <span id="generate-label-text">Generate & Print Label</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Print Label -->
+            <section id="step-3" class="hidden">
+                <div class="bg-white rounded-xl p-6 card-shadow mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-neutral">
+                            <span id="step-3-title">Pet Collar Label</span>
+                        </h2>
+                        <button id="back-to-step-2" class="text-primary hover:text-primary/80 transition-custom">
+                            <i class="fa fa-arrow-left mr-1"></i>
+                            <span id="back-button-2">Back</span>
+                        </button>
+                    </div>
+                    
+                    <div class="flex justify-center mb-6">
+                        <div id="label-preview" class="border-2 border-dashed gray-300 p-6 w-full max-w-md bg-white">
+                            <div class="text-center mb-4">
+                                <h3 class="font-bold text-lg">
+                                    <span id="label-shop-name">PET FRIENDS GROOMING</span>
+                                </h3>
+                                <p class="text-sm text-gray-600">
+                                    <span id="label-shop-address">123 Pet Street, Anytown, USA</span>
+                                </p>
+                            </div>
+                            
+                            <div class="border-t border-b border-gray-200 py-4 my-4">
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">
+                                        <span id="label-pet-name-text">Pet:</span>
+                                    </span>
+                                    <span id="label-pet-name">Buddy</span>
+                                </div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="font-medium">
+                                        <span id="label-owner-text">Owner:</span>
+                                    </span>
+                                    <span id="label-owner">Jennifer Lee</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="font-medium">
+                                        <span id="label-breed-text">Breed:</span>
+                                    </span>
+                                    <span id="label-breed">Golden Retriever</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h4 class="font-medium mb-1">
+                                    <span id="label-allergies-text">Allergies:</span>
+                                </h4>
+                                <p class="text-sm" id="label-allergies">Oatmeal Bath, Beef</p>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <h4 class="font-medium mb-1">
+                                    <span id="label-services-text">Services:</span>
+                                </h4>
+                                <p class="text-sm" id="label-services">-</p>
+                            </div>
+                            
+                            <div class="border-t border-gray-200 pt-4 mt-4 text-center">
+                                <p class="text-xs text-gray-500">
+                                    <span id="label-instructions">Please check back in 2 hours</span>
+                                </p>
+                                <div class="mt-2 h-12 bg-gray-100 flex items-center justify-center">
+                                    <!-- Barcode would be here -->
+                                    <span class="text-xs">BARCODE PLACEHOLDER</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-center space-x-4">
+                        <button id="print-label" class="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-lg transition-custom">
+                            <i class="fa fa-print mr-2"></i>
+                            <span id="print-button">Print Label</span>
+                        </button>
+                        <button id="new-pet" class="bg-gray-200 hover:bg-gray-300 text-neutral font-medium py-2 px-6 rounded-lg transition-custom">
+                            <i class="fa fa-plus mr-2"></i>
+                            <span id="new-pet-button">New Pet</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>
+                <span id="footer-text">© 2025 Pet Shop Management System. All rights reserved.</span>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Language data
+        const translations = {
+            en: {
+                header_title: "Pet Shop Management",
+                step_1_title: "Select Today's Reserved Members",
+                member_1_name: "Jennifer Lee",
+                member_1_phone: "Phone: +1 (555) 123-4567",
+                member_2_name: "Michael Chen",
+                member_2_phone: "Phone: +1 (555) 987-6543",
+                member_3_name: "Sarah Johnson",
+                member_3_phone: "Phone: +1 (555) 456-7890",
+                member_4_name: "David Wilson",
+                member_4_phone: "Phone: +1 (555) 234-5678",
+                step_2_title: "Pet Information",
+                back_button: "Back",
+                pet_breed: "Golden Retriever",
+                pet_name: "Buddy",
+                pet_age: "3 years old",
+                allergy_title: "Allergies:",
+                pet_allergy: "Oatmeal Bath, Beef",
+                special_instructions_title: "Special Instructions:",
+                pet_instructions: "Gentle handling, scared of clippers",
+                grooming_services_title: "Select Grooming Services",
+                service_1_name: "Bath & Brush",
+                service_2_name: "Haircut - Round Head",
+                service_3_name: "Nail Trim",
+                service_4_name: "Teeth Brushing",
+                service_5_name: "Ear Cleaning",
+                subtotal_text: "Subtotal:",
+                tax_text: "Tax (8%):",
+                total_text: "Total:",
+                generate_label_text: "Generate & Print Label",
+                step_3_title: "Pet Collar Label",
+                back_button_2: "Back",
+                label_shop_name: "PET FRIENDS GROOMING",
+                label_shop_address: "123 Pet Street, Anytown, USA",
+                label_pet_name_text: "Pet:",
+                label_owner_text: "Owner:",
+                label_breed_text: "Breed:",
+                label_allergies_text: "Allergies:",
+                label_services_text: "Services:",
+                label_instructions: "Please check back in 2 hours",
+                print_button: "Print Label",
+                new_pet_button: "New Pet",
+                footer_text: "© 2025 Pet Shop Management System. All rights reserved."
+            },
+            zh: {
+                header_title: "寵物店管理系統",
+                step_1_title: "選擇今日預約會員",
+                member_1_name: "李珍妮",
+                member_1_phone: "電話: +886 912 345 678",
+                member_2_name: "陳邁克",
+                member_2_phone: "電話: +886 934 567 890",
+                member_3_name: "莎拉·詹森",
+                member_3_phone: "電話: +886 956 789 012",
+                member_4_name: "大衛·威爾森",
+                member_4_phone: "電話: +886 978 901 234",
+                step_2_title: "寵物資訊",
+                back_button: "返回",
+                pet_breed: "金毛獵犬",
+                pet_name: "巴迪",
+                pet_age: "3歲",
+                allergy_title: "過敏史:",
+                pet_allergy: "燕麥沐浴露、牛肉",
+                special_instructions_title: "特殊指示:",
+                pet_instructions: "請輕柔處理，害怕剪刀",
+                grooming_services_title: "選擇美容服務",
+                service_1_name: "洗澡與梳理",
+                service_2_name: "剪毛 - 修圓頭",
+                service_3_name: "修剪指甲",
+                service_4_name: "刷牙",
+                service_5_name: "清潔耳朵",
+                subtotal_text: "小計:",
+                tax_text: "稅金 (8%):",
+                total_text: "總計:",
+                generate_label_text: "生成並列印標籤",
+                step_3_title: "寵物項圈標籤",
+                back_button_2: "返回",
+                label_shop_name: "寵物朋友美容店",
+                label_shop_address: "台灣台北市信義區寵物街123號",
+                label_pet_name_text: "寵物:",
+                label_owner_text: "主人:",
+                label_breed_text: "品種:",
+                label_allergies_text: "過敏史:",
+                label_services_text: "服務項目:",
+                label_instructions: "請兩小時後回來領取",
+                print_button: "列印標籤",
+                new_pet_button: "新增寵物",
+                footer_text: "© 2025 寵物店管理系統. 保留所有權利."
+            }
+        };
+
+        // Current language
+        let currentLang = 'en';
+
+        // DOM elements
+        const app = document.getElementById('app');
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const step3 = document.getElementById('step-3');
+        const backToStep1 = document.getElementById('back-to-step-1');
+        const backToStep2 = document.getElementById('back-to-step-2');
+        const generateLabel = document.getElementById('generate-label');
+        const printLabel = document.getElementById('print-label');
+        const newPet = document.getElementById('new-pet');
+        const memberCards = document.querySelectorAll('.member-card');
+        const serviceCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+        const subtotalAmount = document.getElementById('subtotal-amount');
+        const taxAmount = document.getElementById('tax-amount');
+        const totalAmount = document.getElementById('total-amount');
+        const labelServices = document.getElementById('label-services');
+        const btnLangEn = document.getElementById('btn-lang-en');
+        const btnLangZh = document.getElementById('btn-lang-zh');
+
+        // Service prices
+        const servicePrices = {
+            'service-1': 35,
+            'service-2': 45,
+            'service-3': 15,
+            'service-4': 10,
+            'service-5': 12
+        };
+
+        // Sample pet data
+        const petData = {
+            1: {
+                name: 'Buddy',
+                breed: 'Golden Retriever',
+                age: '3 years old',
+                allergy: 'Oatmeal Bath, Beef',
+                instructions: 'Gentle handling, scared of clippers',
+                image: 'https://picsum.photos/seed/dog1/400/300',
+                owner: 'Jennifer Lee'
+            },
+            2: {
+                name: 'Luna',
+                breed: 'Siamese Cat',
+                age: '2 years old',
+                allergy: 'None',
+                instructions: 'Loves treats, very friendly',
+                image: 'https://picsum.photos/seed/cat1/400/300',
+                owner: 'Michael Chen'
+            },
+            3: {
+                name: 'Rocky',
+                breed: 'German Shepherd',
+                age: '5 years old',
+                allergy: 'Pollen',
+                instructions: 'Service dog, do not separate from vest',
+                image: 'https://picsum.photos/seed/dog2/400/300',
+                owner: 'Sarah Johnson'
+            },
+            4: {
+                name: 'Daisy',
+                breed: 'Pomeranian',
+                age: '1 year old',
+                allergy: 'Chicken, Dust',
+                instructions: 'Very energetic, needs supervision',
+                image: 'https://picsum.photos/seed/dog3/400/300',
+                owner: 'David Wilson'
+            }
+        };
+
+        // Initialize event listeners
+        function initEventListeners() {
+            // Member card selection
+            memberCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const memberId = card.getAttribute('data-id');
+                    showPetDetails(memberId);
+                    step1.classList.add('hidden');
+                    step2.classList.remove('hidden');
+                });
+            });
+
+            // Back to step 1
+            backToStep1.addEventListener('click', () => {
+                step2.classList.add('hidden');
+                step1.classList.remove('hidden');
+            });
+
+            // Back to step 2
+            backToStep2.addEventListener('click', () => {
+                step3.classList.add('hidden');
+                step2.classList.remove('hidden');
+            });
+
+            // Generate label
+            generateLabel.addEventListener('click', () => {
+                updateLabelServices();
+                step2.classList.add('hidden');
+                step3.classList.remove('hidden');
+            });
+
+            // Print label
+            printLabel.addEventListener('click', () => {
+                // Simulate printing
+                alert('Printing label...');
+                
+                // This is where the actual printing logic would go
+                // Using the app link method from the reference
+                // For example:
+                // window.open('argoxilabelprint://print?data=' + encodeURIComponent(labelData));
+            });
+
+            // New pet
+            newPet.addEventListener('click', () => {
+                // Reset checkboxes
+                serviceCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                updatePrices();
+                
+                step3.classList.add('hidden');
+                step1.classList.remove('hidden');
+            });
+
+            // Service checkboxes
+            serviceCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updatePrices);
+            });
+
+            // Language buttons
+            btnLangEn.addEventListener('click', () => {
+                setLanguage('en');
+            });
+            
+            btnLangZh.addEventListener('click', () => {
+                setLanguage('zh');
+            });
+        }
+
+        // Show pet details based on member ID
+        function showPetDetails(memberId) {
+            const pet = petData[memberId];
+            if (!pet) return;
+            
+            document.getElementById('pet-name').textContent = pet.name;
+            document.getElementById('pet-breed').textContent = pet.breed;
+            document.getElementById('pet-age').textContent = pet.age;
+            document.getElementById('pet-allergy').textContent = pet.allergy;
+            document.getElementById('pet-instructions').textContent = pet.instructions;
+            document.getElementById('pet-image').src = pet.image;
+            document.getElementById('pet-image').alt = `${pet.name} the ${pet.breed}`;
+            document.getElementById('label-pet-name').textContent = pet.name;
+            document.getElementById('label-breed').textContent = pet.breed;
+            document.getElementById('label-owner').textContent = pet.owner;
+            document.getElementById('label-allergies').textContent = pet.allergy;
+        }
+
+        // Update prices based on selected services
+        function updatePrices() {
+            let subtotal = 0;
+            
+            serviceCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    subtotal += servicePrices[checkbox.id] || 0;
+                }
+            });
+            
+            const tax = subtotal * 0.08;
+            const total = subtotal + tax;
+            
+            subtotalAmount.textContent = `$${subtotal.toFixed(2)}`;
+            taxAmount.textContent = `$${tax.toFixed(2)}`;
+            totalAmount.textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Update label services
+        function updateLabelServices() {
+            const selectedServices = [];
+            
+            serviceCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const serviceName = document.querySelector(`label[for="${checkbox.id}"] span`).textContent;
+                    selectedServices.push(serviceName);
+                }
+            });
+            
+            if (selectedServices.length > 0) {
+                labelServices.textContent = selectedServices.join(', ');
+            } else {
+                labelServices.textContent = '-';
+            }
+        }
+
+        // Set language
+        function setLanguage(lang) {
+            if (!translations[lang]) return;
+            
+            currentLang = lang;
+            
+            // Update language buttons
+            if (lang === 'en') {
+                btnLangEn.classList.remove('bg-gray-200', 'text-neutral');
+                btnLangEn.classList.add('bg-primary', 'text-white');
+                btnLangZh.classList.remove('bg-primary', 'text-white');
+                btnLangZh.classList.add('bg-gray-200', 'text-neutral');
+            } else {
+                btnLangZh.classList.remove('bg-gray-200', 'text-neutral');
+                btnLangZh.classList.add('bg-primary', 'text-white');
+                btnLangEn.classList.remove('bg-primary', 'text-white');
+                btnLangEn.classList.add('bg-gray-200', 'text-neutral');
+            }
+            
+            // Update all translated elements
+            Object.keys(translations[lang]).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+        }
+
+        // Initialize the app
+        function initApp() {
+            initEventListeners();
+            setLanguage('en'); // Default to English
+        }
+
+        // Start the app
+        document.addEventListener('DOMContentLoaded', initApp);
+		
+		/////Added by Mark
+		
+		<!-- document.getElementById("bcNum").addEventListener("input", function() { -->
+		<!-- if (this.value.length > 12) { -->
+			<!-- this.value = this.value.slice(0, 12); -->
+		  <!-- } -->
+		  <!-- document.getElementById("bcNumError").textContent = ""; -->
+		<!-- }); -->
+
+		<!-- document.getElementById("txtAmount").addEventListener("input", function() { -->
+		  <!-- if (this.value.length > 4) { -->
+			<!-- this.value = this.value.slice(0, 4); -->
+		  <!-- } -->
+		  <!-- document.getElementById("txtAmountError").textContent = ""; -->
+		<!-- }); -->
+
+
+		function base64URLEncode(text) {
+			// Encode the text content to UTF-8
+			var utf8Bytes = new TextEncoder().encode(text);
+			// Use the built-in btoa() function for Base64 encoding
+			const base64String = btoa(String.fromCharCode(...utf8Bytes));
+			// Adjust the encoding result to meet the requirements of Base64 URL format
+			var base64Url = base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+			return base64Url;
+		}
+
+		<!-- function validateInput() { -->
+		  <!-- var bcNum = document.getElementById("bcNum").value.trim(); -->
+		  <!-- var txtAmount = document.getElementById("txtAmount").value.trim(); -->
+		  <!-- var bcNumError = document.getElementById("bcNumError"); -->
+		  <!-- var txtAmountError = document.getElementById("txtAmountError"); -->
+		  <!-- var bcNumPattern = /^[0-9a-zA-Z]*$/; -->
+		  <!-- var txtAmountPattern = /^[0-9]*$/; -->
+
+		  <!-- if (bcNum === "" || !bcNumPattern.test(bcNum)) { -->
+			<!-- bcNumError.textContent = "Invalid Value!"; -->
+			<!-- document.getElementById("bcNum").focus(); -->
+			<!-- return false; -->
+		  <!-- } -->
+
+		  <!-- if (txtAmount === "" || !txtAmountPattern.test(txtAmount)) { -->
+			<!-- txtAmountError.textContent = "Invalid Value!"; -->
+			<!-- document.getElementById("txtAmount").focus(); -->
+			<!-- return false; -->
+		  <!-- } -->
+
+		  <!-- return true; -->
+		<!-- } -->
+
+		function printLabel2() {
+		  <!-- if (!validateInput()) { -->
+			<!-- return; -->
+		  <!-- } -->
+
+		  <!-- var bcNum = document.getElementById("bcNum").value.trim().toString(); -->
+		  <!-- var txtAmount = document.getElementById("txtAmount").value.trim().toString(); -->
+		  <!-- var debugMode = document.getElementById("debugMode").checked; -->
+		  <!-- var linkTypeSelectedValue = document.querySelector('input[name="linkType"]:checked').value; -->
+
+		  <!-- var jsonData = { -->
+			<!-- "labelSrc": "https://www.argox.com/docfile/iLabelPrint/link_example.json", -->
+			<!-- "cloudLabelVer": 1, -->
+			<!-- "initSetting": { -->
+			  <!-- "copies": 1, -->
+			  <!-- "darkness": 8 -->
+			<!-- }, -->
+			<!-- /*"printInput": { -->
+			  <!-- "bcNum": bcNum, -->
+			  <!-- "txtAmount": txtAmount -->
+			<!-- },*/ -->
+			<!-- "modifyInput": false -->
+		  <!-- }; -->
+
+		  <!-- var jsonString = JSON.stringify(jsonData); -->
+		  <!-- var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function -->
+		  <!-- var url = "https://api.argox.com/ilabelprint/print" + "?data=" + base64URL; -->
+
+		  <!-- if (debugMode) { -->
+			<!-- url += "&debug=on"; -->
+		  <!-- } -->
+
+		 <!-- document.getElementById("jsonOutput").innerHTML = "<pre>" + jsonString + "</pre>"; -->
+		 <!-- document.getElementById("linkOutput").innerHTML = "<pre>" + url + "</pre>"; -->
+		  <!-- window.open(url); -->
+		}
+		
+		/////End of added by Mark
+		
+    </script>
+</body>
+</html>
+    
