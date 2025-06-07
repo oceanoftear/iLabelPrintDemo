@@ -52,6 +52,8 @@
                 <div class="flex space-x-2">
                     <button id="btn-lang-en" class="px-3 py-1 rounded-md bg-primary text-white transition-custom">English</button>
                     <button id="btn-lang-zh" class="px-3 py-1 rounded-md bg-gray-200 text-neutral transition-custom">中文</button>
+                    <button id="btn-lang-es" class="px-3 py-1 rounded-md bg-gray-200 text-neutral transition-custom">Español</button>
+                    <button id="btn-lang-pt" class="px-3 py-1 rounded-md bg-gray-200 text-neutral transition-custom">Português</button>
                 </div>
             </div>
             <div class="border-b border-gray-200 my-4"></div>
@@ -436,6 +438,94 @@
                 print_button: "列印標籤",
                 new_pet_button: "新增寵物",
                 footer_text: "© 2025 寵物店管理系統. 保留所有權利."
+            },
+            es: {
+                header_title: "Sistema de Gestión de Tienda de Mascotas",
+                step_1_title: "Seleccione los miembros reservados de hoy",
+                member_1_name: "Jennifer Lee",
+                member_1_phone: "Teléfono: +1 (555) 123-4567",
+                member_2_name: "Michael Chen",
+                member_2_phone: "Teléfono: +1 (555) 987-6543",
+                member_3_name: "Sarah Johnson",
+                member_3_phone: "Teléfono: +1 (555) 456-7890",
+                member_4_name: "David Wilson",
+                member_4_phone: "Teléfono: +1 (555) 234-5678",
+                step_2_title: "Información de la mascota",
+                back_button: "Volver",
+                pet_breed: "Golden Retriever",
+                pet_name: "Buddy",
+                pet_age: "3 años",
+                allergy_title: "Alergias:",
+                pet_allergy: "Baño de avena, Carne de res",
+                special_instructions_title: "Instrucciones especiales:",
+                pet_instructions: "Manejo suave, asustado de las tijeras",
+                grooming_services_title: "Seleccione servicios de aseo",
+                service_1_name: "Baño y cepillado",
+                service_2_name: "Corte de pelo - Cabeza redonda",
+                service_3_name: "Corte de uñas",
+                service_4_name: "Cepillado de dientes",
+                service_5_name: "Limpieza de orejas",
+                subtotal_text: "Subtotal:",
+                tax_text: "Impuesto (8%):",
+                total_text: "Total:",
+                generate_label_text: "Generar e imprimir etiqueta",
+                step_3_title: "Etiqueta del collar de la mascota",
+                back_button_2: "Volver",
+                label_shop_name: "PET FRIENDS GROOMING",
+                label_shop_address: "123 Calle de las Mascotas, Ciudad, EE. UU.",
+                label_pet_name_text: "Mascota:",
+                label_owner_text: "Dueño:",
+                label_breed_text: "Raza:",
+                label_allergies_text: "Alergias:",
+                label_services_text: "Servicios:",
+                label_instructions: "Por favor, regrese en 2 horas",
+                print_button: "Imprimir etiqueta",
+                new_pet_button: "Nueva mascota",
+                footer_text: "© 2025 Sistema de Gestión de Tienda de Mascotas. Todos los derechos reservados."
+            },
+            pt: {
+                header_title: "Sistema de Gerenciamento de Loja de Animais de Estimação",
+                step_1_title: "Selecione os membros reservados de hoje",
+                member_1_name: "Jennifer Lee",
+                member_1_phone: "Telefone: +1 (555) 123-4567",
+                member_2_name: "Michael Chen",
+                member_2_phone: "Telefone: +1 (555) 987-6543",
+                member_3_name: "Sarah Johnson",
+                member_3_phone: "Telefone: +1 (555) 456-7890",
+                member_4_name: "David Wilson",
+                member_4_phone: "Telefone: +1 (555) 234-5678",
+                step_2_title: "Informações do animal de estimação",
+                back_button: "Voltar",
+                pet_breed: "Golden Retriever",
+                pet_name: "Buddy",
+                pet_age: "3 anos",
+                allergy_title: "Alergias:",
+                pet_allergy: "Banho de aveia, Carne bovina",
+                special_instructions_title: "Instruções especiais:",
+                pet_instructions: "Manuseio suave, com medo de tesouras",
+                grooming_services_title: "Selecione serviços de tosa",
+                service_1_name: "Banho e escovação",
+                service_2_name: "Corte de cabelo - Cabeça redonda",
+                service_3_name: "Corte de unhas",
+                service_4_name: "Escovação de dentes",
+                service_5_name: "Limpeza de orelhas",
+                subtotal_text: "Subtotal:",
+                tax_text: "Imposto (8%):",
+                total_text: "Total:",
+                generate_label_text: "Gerar e imprimir etiqueta",
+                step_3_title: "Etiqueta do coleira do animal de estimação",
+                back_button_2: "Voltar",
+                label_shop_name: "PET FRIENDS GROOMING",
+                label_shop_address: "123 Rua dos Animais, Cidade, EUA",
+                label_pet_name_text: "Animal de estimação:",
+                label_owner_text: "Dono:",
+                label_breed_text: "Raça:",
+                label_allergies_text: "Alergias:",
+                label_services_text: "Serviços:",
+                label_instructions: "Por favor, volte em 2 horas",
+                print_button: "Imprimir etiqueta",
+                new_pet_button: "Novo animal de estimação",
+                footer_text: "© 2025 Sistema de Gerenciamento de Loja de Animais de Estimação. Todos os direitos reservados."
             }
         };
 
@@ -460,6 +550,8 @@
         const labelServices = document.getElementById('label-services');
         const btnLangEn = document.getElementById('btn-lang-en');
         const btnLangZh = document.getElementById('btn-lang-zh');
+        const btnLangEs = document.getElementById('btn-lang-es');
+        const btnLangPt = document.getElementById('btn-lang-pt');
 
         // Service prices
         const servicePrices = {
@@ -543,9 +635,17 @@
 
             // Print label
             printLabel.addEventListener('click', () => {
+                const petName = document.getElementById('label-pet-name').textContent;
+                const ownerName = document.getElementById('label-owner').textContent;
+                const breed = document.getElementById('label-breed').textContent;
+                const allergies = document.getElementById('label-allergies').textContent;
+                const services = document.getElementById('label-services').textContent;
+
                 // Simulate printing
-                alert('Printing label...');
-                
+                //alert('Printing label...');
+                printLabel2();
+				
+				
                 // This is where the actual printing logic would go
                 // Using the app link method from the reference
                 // For example:
@@ -576,6 +676,14 @@
             
             btnLangZh.addEventListener('click', () => {
                 setLanguage('zh');
+            });
+
+            btnLangEs.addEventListener('click', () => {
+                setLanguage('es');
+            });
+
+            btnLangPt.addEventListener('click', () => {
+                setLanguage('pt');
             });
         }
 
@@ -640,16 +748,23 @@
             currentLang = lang;
             
             // Update language buttons
+            const allLangButtons = [btnLangEn, btnLangZh, btnLangEs, btnLangPt];
+            allLangButtons.forEach(button => {
+                button.classList.remove('bg-primary', 'text-white');
+                button.classList.add('bg-gray-200', 'text-neutral');
+            });
             if (lang === 'en') {
                 btnLangEn.classList.remove('bg-gray-200', 'text-neutral');
                 btnLangEn.classList.add('bg-primary', 'text-white');
-                btnLangZh.classList.remove('bg-primary', 'text-white');
-                btnLangZh.classList.add('bg-gray-200', 'text-neutral');
-            } else {
+            } else if (lang === 'zh') {
                 btnLangZh.classList.remove('bg-gray-200', 'text-neutral');
                 btnLangZh.classList.add('bg-primary', 'text-white');
-                btnLangEn.classList.remove('bg-primary', 'text-white');
-                btnLangEn.classList.add('bg-gray-200', 'text-neutral');
+            } else if (lang === 'es') {
+                btnLangEs.classList.remove('bg-gray-200', 'text-neutral');
+                btnLangEs.classList.add('bg-primary', 'text-white');
+            } else if (lang === 'pt') {
+                btnLangPt.classList.remove('bg-gray-200', 'text-neutral');
+                btnLangPt.classList.add('bg-primary', 'text-white');
             }
             
             // Update all translated elements
@@ -664,102 +779,55 @@
         // Initialize the app
         function initApp() {
             initEventListeners();
-            setLanguage('en'); // Default to English
+            setLanguage('zh'); // Default to English
         }
 
         // Start the app
         document.addEventListener('DOMContentLoaded', initApp);
-		
-		/////Added by Mark
-		
-		<!-- document.getElementById("bcNum").addEventListener("input", function() { -->
-		<!-- if (this.value.length > 12) { -->
-			<!-- this.value = this.value.slice(0, 12); -->
-		  <!-- } -->
-		  <!-- document.getElementById("bcNumError").textContent = ""; -->
-		<!-- }); -->
 
-		<!-- document.getElementById("txtAmount").addEventListener("input", function() { -->
-		  <!-- if (this.value.length > 4) { -->
-			<!-- this.value = this.value.slice(0, 4); -->
-		  <!-- } -->
-		  <!-- document.getElementById("txtAmountError").textContent = ""; -->
-		<!-- }); -->
+        // Added by Mark
+        function base64URLEncode(text) {
+            // Encode the text content to UTF-8
+            var utf8Bytes = new TextEncoder().encode(text);
+            // Use the built-in btoa() function for Base64 encoding
+            const base64String = btoa(String.fromCharCode(...utf8Bytes));
+            // Adjust the encoding result to meet the requirements of Base64 URL format
+            var base64Url = base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            return base64Url;
+        }
 
+        function printLabel2() {
+            const petName = document.getElementById('label-pet-name').textContent;
+            const ownerName = document.getElementById('label-owner').textContent;
+            const breed = document.getElementById('label-breed').textContent;
+            const allergies = document.getElementById('label-allergies').textContent;
+            const services = document.getElementById('label-services').textContent;
 
-		function base64URLEncode(text) {
-			// Encode the text content to UTF-8
-			var utf8Bytes = new TextEncoder().encode(text);
-			// Use the built-in btoa() function for Base64 encoding
-			const base64String = btoa(String.fromCharCode(...utf8Bytes));
-			// Adjust the encoding result to meet the requirements of Base64 URL format
-			var base64Url = base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-			return base64Url;
-		}
+            var jsonData = {
+                "labelSrc": "https://www.argox.com/docfile/iLabelPrint/link_example.json",
+                "cloudLabelVer": 1,
+                "initSetting": {
+                    "copies": 1,
+                    "darkness": 8
+                },
+                "printInput": {
+                    "petName": petName,
+                    "ownerName": ownerName,
+                    "breed": breed,
+                    "allergies": allergies,
+                    "services": services
+                },
+                "modifyInput": false
+            };
 
-		<!-- function validateInput() { -->
-		  <!-- var bcNum = document.getElementById("bcNum").value.trim(); -->
-		  <!-- var txtAmount = document.getElementById("txtAmount").value.trim(); -->
-		  <!-- var bcNumError = document.getElementById("bcNumError"); -->
-		  <!-- var txtAmountError = document.getElementById("txtAmountError"); -->
-		  <!-- var bcNumPattern = /^[0-9a-zA-Z]*$/; -->
-		  <!-- var txtAmountPattern = /^[0-9]*$/; -->
+            var jsonString = JSON.stringify(jsonData);
+            var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
+            var url = "https://api.argox.com/ilabelprint/print" + "?data=" + base64URL;
 
-		  <!-- if (bcNum === "" || !bcNumPattern.test(bcNum)) { -->
-			<!-- bcNumError.textContent = "Invalid Value!"; -->
-			<!-- document.getElementById("bcNum").focus(); -->
-			<!-- return false; -->
-		  <!-- } -->
-
-		  <!-- if (txtAmount === "" || !txtAmountPattern.test(txtAmount)) { -->
-			<!-- txtAmountError.textContent = "Invalid Value!"; -->
-			<!-- document.getElementById("txtAmount").focus(); -->
-			<!-- return false; -->
-		  <!-- } -->
-
-		  <!-- return true; -->
-		<!-- } -->
-
-		function printLabel2() {
-		  <!-- if (!validateInput()) { -->
-			<!-- return; -->
-		  <!-- } -->
-
-		  <!-- var bcNum = document.getElementById("bcNum").value.trim().toString(); -->
-		  <!-- var txtAmount = document.getElementById("txtAmount").value.trim().toString(); -->
-		  <!-- var debugMode = document.getElementById("debugMode").checked; -->
-		  <!-- var linkTypeSelectedValue = document.querySelector('input[name="linkType"]:checked').value; -->
-
-		  <!-- var jsonData = { -->
-			<!-- "labelSrc": "https://www.argox.com/docfile/iLabelPrint/link_example.json", -->
-			<!-- "cloudLabelVer": 1, -->
-			<!-- "initSetting": { -->
-			  <!-- "copies": 1, -->
-			  <!-- "darkness": 8 -->
-			<!-- }, -->
-			<!-- /*"printInput": { -->
-			  <!-- "bcNum": bcNum, -->
-			  <!-- "txtAmount": txtAmount -->
-			<!-- },*/ -->
-			<!-- "modifyInput": false -->
-		  <!-- }; -->
-
-		  <!-- var jsonString = JSON.stringify(jsonData); -->
-		  <!-- var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function -->
-		  <!-- var url = "https://api.argox.com/ilabelprint/print" + "?data=" + base64URL; -->
-
-		  <!-- if (debugMode) { -->
-			<!-- url += "&debug=on"; -->
-		  <!-- } -->
-
-		 <!-- document.getElementById("jsonOutput").innerHTML = "<pre>" + jsonString + "</pre>"; -->
-		 <!-- document.getElementById("linkOutput").innerHTML = "<pre>" + url + "</pre>"; -->
-		  <!-- window.open(url); -->
-		}
-		
-		/////End of added by Mark
-		
+            document.getElementById("jsonOutput").innerHTML = "<pre>" + jsonString + "</pre>";
+            document.getElementById("linkOutput").innerHTML = "<pre>" + url + "</pre>";
+            window.open(url);
+        }
     </script>
 </body>
 </html>
-    
