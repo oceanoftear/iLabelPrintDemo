@@ -641,15 +641,11 @@
                 const allergies = document.getElementById('label-allergies').textContent;
                 const services = document.getElementById('label-services').textContent;
 
-                // Simulate printing
+
                 //alert('Printing label...');
                 printLabel2();
 				
 				
-                // This is where the actual printing logic would go
-                // Using the app link method from the reference
-                // For example:
-                // window.open('argoxilabelprint://print?data=' + encodeURIComponent(labelData));
             });
 
             // New pet
@@ -826,8 +822,8 @@
             var base64URL = base64URLEncode(jsonString); // Use base64 URL encoding function
             var url = "https://api.argox.com/ilabelprint/print" + "?data=" + base64URL;
 
-            document.getElementById("jsonOutput").innerHTML = "<pre>" + jsonString + "</pre>";
-            document.getElementById("linkOutput").innerHTML = "<pre>" + url + "</pre>";
+            //document.getElementById("jsonOutput").innerHTML = "<pre>" + jsonString + "</pre>";
+            //document.getElementById("linkOutput").innerHTML = "<pre>" + url + "</pre>";
             window.open(url);
         }
     </script>
