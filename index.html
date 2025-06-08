@@ -42,8 +42,8 @@
     <div id="app" class="max-w-4xl mx-auto px-4 py-8">
         <!-- Header Section -->
         <header class="mb-8">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-2">
+            <div class="flex justify-between items-center flex-wrap md:flex-nowrap">
+                <div class="flex items-center space-x-2 mb-2 md:mb-0">
                     <i class="fa fa-paw text-primary text-3xl"></i>
                     <h1 class="text-2xl font-bold text-neutral">
                         <span id="header-title">Pet Shop Management</span>
@@ -144,7 +144,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <div class="relative">
-                                <img id="pet-image" src="https://picsum.photos/seed/dog1/400/300" alt="Pet Photo" class="w-full h-64 object-cover rounded-lg">
+                                <img id="pet-image" src="gr.png" alt="Pet Photo" class="w-full h-64 object-cover rounded-lg">
                                 <div class="absolute bottom-3 left-3 bg-white/90 px-3 py-1 rounded-full text-sm font-medium">
                                     <span id="pet-breed">Golden Retriever</span>
                                 </div>
@@ -570,7 +570,7 @@
                 age: '3 years old',
                 allergy: 'Oatmeal Bath, Beef',
                 instructions: 'Gentle handling, scared of clippers',
-                image: 'https://picsum.photos/seed/dog1/400/300',
+                image: 'gr.png',
                 owner: 'Jennifer Lee'
             },
             2: {
@@ -579,7 +579,7 @@
                 age: '2 years old',
                 allergy: 'None',
                 instructions: 'Loves treats, very friendly',
-                image: 'https://picsum.photos/seed/cat1/400/300',
+                image: 'sm.png',
                 owner: 'Michael Chen'
             },
             3: {
@@ -588,7 +588,7 @@
                 age: '5 years old',
                 allergy: 'Pollen',
                 instructions: 'Service dog, do not separate from vest',
-                image: 'https://picsum.photos/seed/dog2/400/300',
+                image: 'gs.png',
                 owner: 'Sarah Johnson'
             },
             4: {
@@ -597,7 +597,7 @@
                 age: '1 year old',
                 allergy: 'Chicken, Dust',
                 instructions: 'Very energetic, needs supervision',
-                image: 'https://picsum.photos/seed/dog3/400/300',
+                image: 'pr.png',
                 owner: 'David Wilson'
             }
         };
@@ -641,11 +641,11 @@
                 const allergies = document.getElementById('label-allergies').textContent;
                 const services = document.getElementById('label-services').textContent;
 
-
+                // Simulate printing
                 //alert('Printing label...');
                 printLabel2();
-				
-				
+
+
             });
 
             // New pet
@@ -722,68 +722,48 @@
         // Update label services
         function updateLabelServices() {
             const selectedServices = [];
-            
             serviceCheckboxes.forEach(checkbox => {
                 if (checkbox.checked) {
                     const serviceName = document.querySelector(`label[for="${checkbox.id}"] span`).textContent;
                     selectedServices.push(serviceName);
                 }
             });
-            
-            if (selectedServices.length > 0) {
-                labelServices.textContent = selectedServices.join(', ');
-            } else {
-                labelServices.textContent = '-';
-            }
+            labelServices.textContent = selectedServices.length > 0 ? selectedServices.join(', ') : '-';
         }
 
         // Set language
         function setLanguage(lang) {
-            if (!translations[lang]) return;
-            
             currentLang = lang;
-            
-            // Update language buttons
-            const allLangButtons = [btnLangEn, btnLangZh, btnLangEs, btnLangPt];
-            allLangButtons.forEach(button => {
-                button.classList.remove('bg-primary', 'text-white');
-                button.classList.add('bg-gray-200', 'text-neutral');
-            });
-            if (lang === 'en') {
-                btnLangEn.classList.remove('bg-gray-200', 'text-neutral');
-                btnLangEn.classList.add('bg-primary', 'text-white');
-            } else if (lang === 'zh') {
-                btnLangZh.classList.remove('bg-gray-200', 'text-neutral');
-                btnLangZh.classList.add('bg-primary', 'text-white');
-            } else if (lang === 'es') {
-                btnLangEs.classList.remove('bg-gray-200', 'text-neutral');
-                btnLangEs.classList.add('bg-primary', 'text-white');
-            } else if (lang === 'pt') {
-                btnLangPt.classList.remove('bg-gray-200', 'text-neutral');
-                btnLangPt.classList.add('bg-primary', 'text-white');
-            }
-            
-            // Update all translated elements
-            Object.keys(translations[lang]).forEach(key => {
-                const element = document.getElementById(key);
+            const langData = translations[lang];
+            for (const key in langData) {
+                const element = document.getElementById(key.replace(/_/g, '-'));
                 if (element) {
-                    element.textContent = translations[lang][key];
+                    element.textContent = langData[key];
                 }
-            });
-		updateLabelServices();
-    		updatePrices();
+            }
+            // Update button styles
+            btnLangEn.classList.remove('bg-primary', 'text-white');
+            btnLangZh.classList.remove('bg-primary', 'text-white');
+            btnLangEs.classList.remove('bg-primary', 'text-white');
+            btnLangPt.classList.remove('bg-primary', 'text-white');
+            btnLangEn.classList.add('bg-gray-200', 'text-neutral');
+            btnLangZh.classList.add('bg-gray-200', 'text-neutral');
+            btnLangEs.classList.add('bg-gray-200', 'text-neutral');
+            btnLangPt.classList.add('bg-gray-200', 'text-neutral');
+            const activeButton = document.getElementById(`btn-lang-${lang}`);
+            activeButton.classList.remove('bg-gray-200', 'text-neutral');
+            activeButton.classList.add('bg-primary', 'text-white');
         }
 
         // Initialize the app
-        function initApp() {
+        function init() {
             initEventListeners();
-            setLanguage('zh'); // Default to English
+            setLanguage(currentLang);
         }
 
-        // Start the app
-        document.addEventListener('DOMContentLoaded', initApp);
-
-        // Added by Mark
+        window.onload = init;
+		
+		       // Added by Mark
         function base64URLEncode(text) {
             // Encode the text content to UTF-8
             var utf8Bytes = new TextEncoder().encode(text);
@@ -826,6 +806,7 @@
             //document.getElementById("linkOutput").innerHTML = "<pre>" + url + "</pre>";
             window.open(url);
         }
+		
     </script>
 </body>
 </html>
