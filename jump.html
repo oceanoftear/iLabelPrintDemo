@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>IP判斷跳轉示例</title>
+  <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+  <script>
+    window.onload = function () {
+      if (typeof remote_ip_info !== "undefined" && remote_ip_info.country) {
+        if (remote_ip_info.country === "中国") {
+          // 如果IP來自中國，跳轉中國頁面
+          window.location.href = "https://china.example.com";
+        } else {
+          // 否則跳轉國際頁面
+          window.location.href = "https://global.example.com";
+        }
+      } else {
+        console.warn("無法獲取IP地理位置，無跳轉操作");
+      }
+    };
+  </script>
+</head>
+<body>
+  <h1>正在檢測您的位置，請稍候...</h1>
+</body>
+</html>

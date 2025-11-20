@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>视频导引跳转</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      text-align: center;
+      padding: 40px 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+    p {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.6;
+    }
+    .loading {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #888;
+    }
+  </style>
+
+  <script>
+    // ★ 在这里填写你的两个视频链接
+    const BILIBILI_URL = "https://www.bilibili.com/video/你的B站视频ID";
+    const YOUTUBE_URL = "https://www.youtube.com/watch?v=你的YouTube视频ID";
+
+    // ★ 在这里填写你从 IPLocate.io 或其它 IP 定位服务申请的 API Key
+    const IP_API_KEY = "YOUR_API_KEY_HERE";
+
+    function redirectByCountry(countryCode) {
+      // countryCode 是两位国家码，比如 CN, US, DE 等
+      if (countryCode === "CN") {
+        // 中国用户 → 跳转到 B 站
+        window.location.href = BILIBILI_URL;
+      } else {
+        // 其他国家/地区用户 → 跳转到 YouTube
+        window.location.href = YOUTUBE_URL;
+      }
+    }
+
+    function handleGeoError() {
+      // 定位失败时的兜底：默认跳转到 YouTube（你也可以改成 B 站）
+      window.location.href = YOUTUBE_URL;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      // 从 IPLocate 获取当前访问者 IP 对应国家
+      // 文档示例：fetch('https://iplocate.io/api/lookup/?apikey=YOUR_API_KEY')...[web:23]
+      fetch("https://iplocate.io/api/lookup/?apikey=" + encodeURIComponent(IP_API_KEY))
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (data) {
+          // data.country_code 如 "CN"、"US" 等[web:23]
+          if (data && data.country_code) {
+            redirectByCountry(data.country_code);
+          } else {
+            handleGeoError();
+          }
+        })
+        .catch(function (err) {
+          console.error("Geo lookup error:", err);
+          handleGeoError();
+        });
+    });
+  </script>
+</head>
+<body>
+  <h1>正在为您打开视频导引…</h1>
+  <p>请稍候几秒，系统会根据您所在地区自动跳转到合适的视频平台。</p>
+  <p>如果长时间没有自动跳转，请刷新页面或检查网络连接。</p>
+  <div class="loading">Loading / 正在检测您的位置…</div>
+</body>
+</html>
