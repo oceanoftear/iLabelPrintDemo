@@ -2,26 +2,158 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IP判斷跳轉示例</title>
-  <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+  <title>视频导引跳转（调试版）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      text-align: center;
+      padding: 40px 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+    p {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.6;
+    }
+    .loading {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #888;
+    }
+    .debug {
+      margin-top: 24px;
+      padding: 12px 16px;
+      background: #fff;
+      border-radius: 6px;
+      display: inline-block;
+      text-align: left;
+      font-size: 14px;
+      color: #333;
+      box-shadow: 0 0 4px rgba(0,0,0,0.1);
+    }
+    .btn {
+      margin-top: 16px;
+      padding: 8px 16px;
+      border-radius: 4px;
+      border: none;
+      background: #007bff;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+  </style>
+
   <script>
-    window.onload = function () {
-      if (typeof remote_ip_info !== "undefined" && remote_ip_info.country) {
-        if (remote_ip_info.country === "中国") {
-          // 如果IP來自中國，跳轉中國頁面
-          window.location.href = "https://china.example.com";
-        } else {
-          // 否則跳轉國際頁面
-          window.location.href = "https://global.example.com";
-        }
+    // ★ 在这里填写你的两个视频链接
+    const BILIBILI_URL = "https://www.bilibili.com/video/你的B站视频ID";
+    const YOUTUBE_URL = "https://www.youtube.com/watch?v=你的YouTube视频ID";
+
+    // ★ 在这里填写你的 IPLocate API Key
+    const IP_API_KEY = "YOUR_API_KEY_HERE";
+
+    let detectedCountryCode = null;
+    let targetUrl = null;
+
+    function decideTarget(countryCode) {
+      if (countryCode === "CN") {
+        targetUrl = BILIBILI_URL;
+        return "检测到国家代码为 CN，将跳转到：B站";
       } else {
-        console.warn("無法獲取IP地理位置，無跳轉操作");
+        targetUrl = YOUTUBE_URL;
+        return "检测到国家代码为 " + countryCode + "，将跳转到：YouTube";
       }
-    };
+    }
+
+    function updateDebug(info) {
+      const elCountry = document.getElementById("countryCode");
+      const elInfo = document.getElementById("infoText");
+      const elError = document.getElementById("errorText");
+
+      if (info.countryCode !== undefined) {
+        elCountry.textContent = info.countryCode || "(无)";
+      }
+      if (info.text !== undefined) {
+        elInfo.textContent = info.text;
+      }
+      if (info.error !== undefined) {
+        elError.textContent = info.error;
+      }
+    }
+
+    function redirectNow() {
+      if (targetUrl) {
+        window.location.href = targetUrl;
+      } else {
+        alert("尚未确定跳转目标，请先确认已成功获取国家代码。");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      updateDebug({
+        countryCode: "",
+        text: "正在调用 IPLocate API 获取您的国家代码…",
+        error: ""
+      });
+
+      fetch("https://iplocate.io/api/lookup/?apikey=" + encodeURIComponent(IP_API_KEY))
+        .then(function (res) {
+          return res.json();
+        })
+        .then(function (data) {
+          console.log("IPLocate 返回数据:", data);
+          // data.country_code 如 "CN"、"US" 等[web:41][web:43]
+          detectedCountryCode = data && data.country_code ? data.country_code : null;
+
+          if (detectedCountryCode) {
+            const desc = decideTarget(detectedCountryCode);
+            updateDebug({
+              countryCode: detectedCountryCode,
+              text: desc,
+              error: ""
+            });
+          } else {
+            updateDebug({
+              countryCode: "(未获取到)",
+              text: "未从 API 返回中解析到国家代码。",
+              error: "请检查 API Key 是否正确或稍后重试。"
+            });
+          }
+        })
+        .catch(function (err) {
+          console.error("Geo lookup error:", err);
+          updateDebug({
+            countryCode: "(错误)",
+            text: "调用 IPLocate API 时发生错误。",
+            error: "错误详情已输出到浏览器控制台（F12）。"
+          });
+        });
+    });
   </script>
 </head>
 <body>
-  <h1>正在檢測您的位置，請稍候...</h1>
+  <h1>视频导引跳转（调试模式）</h1>
+  <p>本页面会先显示检测到的国家代码和预期跳转目标，确认无误后再手动点击按钮跳转。</p>
+
+  <div class="debug">
+    <div>检测到的国家代码（country_code）：<span id="countryCode">（等待检测…）</span></div>
+    <div style="margin-top:8px;">说明：<span id="infoText"></span></div>
+    <div style="margin-top:8px; color:#c00;">错误信息：<span id="errorText"></span></div>
+  </div>
+
+  <div>
+    <button class="btn" onclick="redirectNow()">现在跳转到目标视频</button>
+  </div>
+
+  <div class="loading">调试提示：打开浏览器开发者工具 (F12) → Console，可查看完整 API 返回数据。</div>
 </body>
 </html>
